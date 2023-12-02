@@ -1,11 +1,14 @@
 package day1
 
 import (
-	"kumahr.io/advent-of-code-2023/day1/part1"
-	"kumahr.io/advent-of-code-2023/day1/part2"
+	"adventofcode2023/day1/part1"
+	"adventofcode2023/day1/part2"
+	"adventofcode2023/util"
+	"fmt"
 )
 
 func Run(inputPath string) {
-	part1.RunPart1(inputPath)
-	part2.RunPart2(inputPath)
+	lines := util.LoadInput(inputPath)
+	fmt.Println("[DAY 1][PART 1]", part1.SumCalibrationValues(lines))
+	fmt.Println("[DAY 1][PART 2]", part2.SumCalibrationValues(lines))
 }

@@ -1,10 +1,7 @@
 package part2
 
 import (
-	"bufio"
 	"fmt"
-	"log"
-	"os"
 	"strconv"
 	"strings"
 	"unicode"
@@ -84,7 +81,7 @@ func getCalibrationValue(line string) int {
 	return 0
 }
 
-func sumCalibrationValues(lines []string) int {
+func SumCalibrationValues(lines []string) int {
 	var calibrationValues []int
 	for _, line := range lines {
 		calibrationValues = append(calibrationValues, getCalibrationValue(line))
@@ -94,20 +91,4 @@ func sumCalibrationValues(lines []string) int {
 		sum += v
 	}
 	return sum
-}
-
-func RunPart2(inputPath string) {
-	file, err := os.Open(inputPath)
-	if err != nil {
-		log.Fatalln("Could not open input file", err)
-	}
-	defer file.Close()
-
-	var lines []string
-	fileScanner := bufio.NewScanner(file)
-	fileScanner.Split(bufio.ScanLines)
-	for fileScanner.Scan() {
-		lines = append(lines, fileScanner.Text())
-	}
-	log.Println(sumCalibrationValues(lines))
 }

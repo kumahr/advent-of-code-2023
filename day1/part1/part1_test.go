@@ -21,7 +21,7 @@ func TestSumCalibrationValues(t *testing.T) {
 		lines = append(lines, fileScanner.Text())
 	}
 
-	got := sumCalibrationValues(lines)
+	got := SumCalibrationValues(lines)
 	want := 142
 
 	if got != want {
