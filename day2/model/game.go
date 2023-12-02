@@ -6,6 +6,10 @@ type Draw struct {
 	Blue  int
 }
 
+func (d *Draw) Power() int {
+	return d.Red * d.Green * d.Blue
+}
+
 type Game struct {
 	Id    int
 	Draws []Draw
