@@ -25,7 +25,7 @@ func isSymbol(ch rune) bool {
 	return !unicode.IsDigit(ch) && !(ch == '.')
 }
 
-func isGear(ch rune) bool {
+func isStar(ch rune) bool {
 	return ch == '*'
 }
 
@@ -53,7 +53,7 @@ func digitIsAdjacentToSymbol(matrix Matrix, x int, y int) (bool, []string) {
 	for _, cell := range adjacentCells {
 		if matrix.isInRange(cell) && isSymbol([]rune(matrix.Grid[cell.X])[cell.Y]) {
 			found = true
-			if isGear([]rune(matrix.Grid[cell.X])[cell.Y]) {
+			if isStar([]rune(matrix.Grid[cell.X])[cell.Y]) {
 				gears = append(gears, fmt.Sprint(cell))
 			}
 		}
@@ -61,12 +61,10 @@ func digitIsAdjacentToSymbol(matrix Matrix, x int, y int) (bool, []string) {
 	return found, gears
 }
 
-func resetSearch(fAdjCell *bool, pNumbers *string, pNumber *string, gearsByPart *[]string, m map[string][]string, chain *string) {
+func resetSearch(fAdjCell *bool, gearsByPart *[]string, m map[string][]string, chain *string) {
 	if *fAdjCell {
-		*pNumbers += " " + *pNumber
 		m[*chain] = *gearsByPart
 	}
-	*pNumber = ""
 	*fAdjCell = false
 	*gearsByPart = []string{}
 	*chain = ""
@@ -101,31 +99,26 @@ func pushStars(hostGears []string, newGears []string) []string {
 
 func SumGears(lines []string) (sum int) {
 	sum = 0
-	strPartNumbers := ""
 	matrix := Matrix{Grid: lines, Dim: getMatrixSize(lines)}
 	m := map[string][]string{}
 	for x, line := range lines {
-		pNumbers := ""
-		pNumber := ""
 		chain := ""
 		gearsByPart := []string{}
 		fAdjCell := false
 		for y, ch := range line {
 			if unicode.IsDigit(ch) {
-				pNumber += string(ch)
 				chain += fmt.Sprintf("%d->%d;", x, y)
 				if b, gears := digitIsAdjacentToSymbol(matrix, x, y); b {
 					fAdjCell = true
 					gearsByPart = pushStars(gearsByPart, gears)
 				}
 				if y == len(line)-1 {
-					resetSearch(&fAdjCell, &pNumbers, &pNumber, &gearsByPart, m, &chain)
+					resetSearch(&fAdjCell, &gearsByPart, m, &chain)
 				}
 			} else {
-				resetSearch(&fAdjCell, &pNumbers, &pNumber, &gearsByPart, m, &chain)
+				resetSearch(&fAdjCell, &gearsByPart, m, &chain)
 			}
 		}
-		strPartNumbers += " " + pNumbers
 	}
 
 	gearRatios := map[string][]string{}
